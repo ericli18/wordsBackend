@@ -7,9 +7,10 @@ const Word = require("./models/word");
 app.use(morgan("dev"));
 app.use(cors());
 app.use(express.json());
+app.use(express.static("dist"));
 
 const errorHandler = (error, request, response, next) => {
-    console.error(error.message);
+  console.error(error.message);
 };
 
 app.get("/api/words", (req, res) => {
@@ -19,33 +20,33 @@ app.get("/api/words", (req, res) => {
 });
 
 app.get("/api/words/:id", (req, res, next) => {
-    Word.findById(req.params.id)
-        .then(word => {
-            if (word) {
-                res.json(word);
-            } else {
-                res.status(404).end();
-            }
-        })
-        .catch(error => next(error));
+  Word.findById(req.params.id)
+    .then((word) => {
+      if (word) {
+        res.json(word);
+      } else {
+        res.status(404).end();
+      }
+    })
+    .catch((error) => next(error));
 });
 
 app.post("/api/words", (req, res, next) => {
-    const body = req.body;
-    if (!body.word || !body.definition || !body.etymology) {
-        return res.status(400).json({
-            error: "content missing"
-        });
-    }
-    const word = new Word({
-        word: body.word,
-        definition: body.definition,
-        etymology: body.etymology,
+  const body = req.body;
+  if (!body.word || !body.definition || !body.etymology) {
+    return res.status(400).json({
+      error: "content missing",
     });
+  }
+  const word = new Word({
+    word: body.word,
+    definition: body.definition,
+    etymology: body.etymology,
+  });
 
-    word.save().then(savedWord => {
-        res.json(savedWord);
-    });
+  word.save().then((savedWord) => {
+    res.json(savedWord);
+  });
 });
 
 app.use(errorHandler);
