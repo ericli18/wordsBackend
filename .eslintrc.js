@@ -4,6 +4,7 @@ module.exports = {
     commonjs: true,
     es2021: true,
     node: true,
+    jest: true, // Enables Jest global variables
   },
   extends: 'eslint:recommended',
   overrides: [],

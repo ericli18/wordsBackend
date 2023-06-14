@@ -1,6 +1,7 @@
 const express = require('express');
 const wordsRouter = express.Router();
 const Word = require('../models/word');
+//mongodb is draydere
 
 wordsRouter.get('/', (req, res) => {
   Word.find({}).then((words) => {
