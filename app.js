@@ -4,6 +4,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const wordRouter = require('./controllers/words');
 const config = require('./utils/config');
+require('express-async-errors');
 
 const mongoURL = config.MONGODB_URI;
 mongoose.connect(mongoURL);

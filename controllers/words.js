@@ -36,7 +36,19 @@ wordsRouter.post('/', async (req, res) => {
   });
 
   const savedWord = await word.save();
-  res.json(savedWord);
+  res.status(201).json(savedWord);
+});
+
+wordsRouter.put('/:id', async (req, res) => {
+  const body = req.body;
+  const word = {
+    word: body.word,
+    definition: body.definition,
+    etymology: body.etymology,
+  };
+
+  const updatedWord = await Word.findByIdAndUpdate(req.params.id, word, { new: true });
+  res.json(updatedWord);
 });
 
 module.exports = wordsRouter;

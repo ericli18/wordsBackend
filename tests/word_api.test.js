@@ -55,6 +55,40 @@ describe('viewing a specific word', () => {
   });
 });
 
+describe('adding and updating words', () => {
+  test('a valid word can be added', async () => {
+    const newWord = {
+      word: 'test3',
+      definition: 'test3',
+      etymology: 'test3',
+    };
+
+    await api
+      .post('/api/words')
+      .send(newWord)
+      .expect(201)
+      .expect('Content-Type', /application\/json/);
+  });
+
+  test('fails with status code 400 if word is invalid', async () => {
+    const newWord = {
+      word: 'test3',
+    };
+
+    await api.post('/api/words').send(newWord).expect(400);
+  });
+
+  test('a word can be updated', async () => {
+    const response = await api.get('/api/words');
+    const wordToUpdate = response.body[0];
+    const resultWord = await api
+      .put(`/api/words/${wordToUpdate.id}`)
+      .send(wordToUpdate)
+      .expect(200);
+    expect(resultWord.read).toBeDefined();
+  });
+});
+
 afterAll(async () => {
   await mongoose.connection.close();
 });
