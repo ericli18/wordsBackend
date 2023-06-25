@@ -3,19 +3,7 @@ const supertest = require('supertest');
 const app = require('../app');
 const Word = require('../models/word');
 const api = supertest(app);
-
-const initialWords = [
-  {
-    word: 'test',
-    definition: 'test',
-    etymology: 'test',
-  },
-  {
-    word: 'test2',
-    definition: 'test2',
-    etymology: 'test2',
-  },
-];
+const initialWords = require('./helpers').initialWords;
 
 beforeEach(async () => {
   await Word.deleteMany({});

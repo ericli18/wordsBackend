@@ -1,5 +1,6 @@
 const Word = require('../models/word');
 const User = require('../models/user');
+const jwt = require('jsonwebtoken');
 
 const initialWords = [
   {
@@ -47,10 +48,33 @@ const usersInDb = async () => {
   return users.map((user) => user.toJSON());
 }
 
+const invalidToken = async () => {
+  const user = new User({
+    username: 'invalid',
+    password: 'invalid'
+  })
+
+  return jwt.sign(user.username, process.env.SECRET);
+}
+
+//only valid if database already has filled with initial users
+const validToken = async () => {
+  const username = initialUsers[0].username
+  const user = await User.findOne({username});
+  const userForToken = {
+    username: user.username,
+    id: user._id,
+  };
+  const token = jwt.sign(userForToken, process.env.SECRET);
+  return token;
+}
+
 module.exports = {
   initialWords,
   initialUsers,
   nonExistingId,
   wordsInDb,
   usersInDb,
+  invalidToken,
+  validToken
 };

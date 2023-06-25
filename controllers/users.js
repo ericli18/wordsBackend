@@ -26,4 +26,16 @@ usersRouter.post('/', async (req, res) => {
   res.status(201).json(savedUser);
 });
 
+usersRouter.put('/:id', async (req, res) => {
+  const body = req.body._doc || req.body;
+  const user = {
+    username: body.username,
+    passwordHash: body.passwordHash,
+    words: body.words
+  };
+
+  const updatedUser = await User.findByIdAndUpdate(req.params.id, user, {new: true});
+  res.json(updatedUser);
+})
+
 module.exports = usersRouter;
