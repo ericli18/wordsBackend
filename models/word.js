@@ -4,7 +4,8 @@ const wordSchema = new mongoose.Schema({
   word: String,
   definition: String,
   etymology: String,
-  acceessed: Number,
+  accessDate: Number,
+  likes: Number,
 });
 
 wordSchema.set('toJSON', {
