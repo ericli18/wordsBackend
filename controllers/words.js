@@ -33,8 +33,8 @@ wordsRouter.post('/', async (req, res) => {
     word: body.word,
     definition: body.definition,
     etymology: body.etymology,
-    accessDate: accessDate? accessDate : 0,
-    likes: likes? likes : 0,
+    accessDate: body.accessDate? body.accessDate : 0,
+    likes: body.likes? body.likes : 0,
   });
 
   const savedWord = await word.save();
@@ -47,6 +47,8 @@ wordsRouter.put('/:id', async (req, res) => {
     word: body.word,
     definition: body.definition,
     etymology: body.etymology,
+    accessDate: body.accessDate,
+    likes: body.likes,
   };
 
   const updatedWord = await Word.findByIdAndUpdate(req.params.id, word, { new: true });

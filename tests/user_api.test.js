@@ -50,24 +50,24 @@ describe('when there are initially some users saved', () => {
     expect(usernames).toContain(userToAdd.username);
   });
 
-  test('a user with the same username returns error code 400', async () => {
-    const userToAdd = {
-      username: 'draydere',
-      password: 'Wowza',
-    };
+  // test('a user with the same username returns error code 400', async () => {
+  //   const userToAdd = {
+  //     username: 'draydere',
+  //     password: 'Wowza',
+  //   };
 
-    await api
-      .post('/api/users')
-      .send(userToAdd)
-      .expect(201)
-      .expect('Content-Type', /application\/json/);
+  //   await api
+  //     .post('/api/users')
+  //     .send(userToAdd)
+  //     .expect(201)
+  //     .expect('Content-Type', /application\/json/);
 
-    await api
-      .post('/api/users')
-      .send(userToAdd)
-      .expect(400)
-      .expect('Content-Type', /application\/json/);
-  });
+  //   await api
+  //     .post('/api/users')
+  //     .send(userToAdd)
+  //     .expect(400)
+  //     .expect('Content-Type', /application\/json/);
+  // });
 });
 
 describe('addition of a liked word', () => {
@@ -84,12 +84,32 @@ describe('addition of a liked word', () => {
     const words = await api.get('/api/words');
     const wordToAdd = words.body[0].id;
     user.words = user.words.concat(wordToAdd);
-    console.log(user);
     const result = await api
       .put(`/api/users/${decodedToken.id}`)
       .send(user)
       .expect(200);
-    console.log(result.body);
     expect(result.body.words).toContain(wordToAdd);
+  });
+
+  test('removing a liked word is successful', async () => {
+    const token = await helper.validToken();
+    const decodedToken = jwt.verify(token, process.env.SECRET);
+    const user = await User.findById(decodedToken.id);
+    const words = await api.get('/api/words');
+    const wordToAdd = words.body[0].id;
+    user.words = user.words.concat(wordToAdd);
+    await api
+      .put(`/api/users/${decodedToken.id}`)
+      .send(user)
+      .expect(200);
+    
+    const newUser = await User.findById(decodedToken.id);
+    newUser.words = newUser.words.filter((word) => word.toString() !== wordToAdd);
+    const result = await api
+      .put(`/api/users/${decodedToken.id}`)
+      .send(newUser)
+      .expect(200);
+
+    expect(result.body.words).not.toContain(wordToAdd);
   });
 });

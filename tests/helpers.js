@@ -7,11 +7,15 @@ const initialWords = [
     word: 'test',
     definition: 'test',
     etymology: 'test',
+    accessDate: 0,
+    likes: 0,
   },
   {
     word: 'test2',
     definition: 'test2',
     etymology: 'test2',
+    accessDate: 0,
+    likes: 0,
   },
 ];
 
@@ -31,6 +35,8 @@ const nonExistingId = async () => {
     word: 'willremovethissoon',
     definition: 'willremovethissoon',
     etymology: 'willremovethissoon',
+    accessDate: 0,
+    likes: 0,
   });
   await word.save();
   await word.remove();

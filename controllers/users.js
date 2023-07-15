@@ -1,9 +1,15 @@
 const usersRouter = require('express').Router();
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
+const Word = require('../models/word');
 
 usersRouter.get('/', async (req, res) => {
-  const users = await User.find({}).populate('words', { word: 1, definition: 1, etymology: 1 });
+  const users = await User.find({}).populate('words', {
+    word: 1,
+    definition: 1,
+    etymology: 1,
+    likes: 1,
+  });
   res.json(users);
 });
 
@@ -28,14 +34,17 @@ usersRouter.post('/', async (req, res) => {
 
 usersRouter.put('/:id', async (req, res) => {
   const body = req.body._doc || req.body;
+
   const user = {
     username: body.username,
     passwordHash: body.passwordHash,
-    words: body.words
+    words: body.words,
   };
 
-  const updatedUser = await User.findByIdAndUpdate(req.params.id, user, {new: true});
+  const updatedUser = await User.findByIdAndUpdate(req.params.id, user, {
+    new: true,
+  });
   res.json(updatedUser);
-})
+});
 
 module.exports = usersRouter;

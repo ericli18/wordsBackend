@@ -69,11 +69,12 @@ describe('adding and updating words', () => {
   test('a word can be updated', async () => {
     const response = await api.get('/api/words');
     const wordToUpdate = response.body[0];
+    wordToUpdate.likes = 1;
     const resultWord = await api
       .put(`/api/words/${wordToUpdate.id}`)
       .send(wordToUpdate)
       .expect(200);
-    expect(resultWord.read).toBeDefined();
+    expect(resultWord.body.likes).toBe(1);
   });
 });
 
