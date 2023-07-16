@@ -13,6 +13,25 @@ usersRouter.get('/', async (req, res) => {
   res.json(users);
 });
 
+usersRouter.get('/:id', async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.id).populate('words', {
+      word: 1,
+      definition: 1,
+      etymology: 1,
+      likes: 1,
+    });
+
+    if (user) {
+      res.json(user);
+    } else {
+      res.status(404).end();
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
 usersRouter.post('/', async (req, res) => {
   const body = req.body;
   if (!body.username || !body.password) {
