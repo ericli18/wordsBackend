@@ -88,7 +88,15 @@ describe('addition of a liked word', () => {
       .put(`/api/users/${decodedToken.id}`)
       .send(user)
       .expect(200);
-    expect(result.body.words).toContain(wordToAdd);
+    expect(helper.mapToIds(result.body.words)).toContain(wordToAdd);
+
+    const newWordToAdd = words.body[1].id;
+    user.words = user.words.concat(newWordToAdd);
+    const newResult = await api
+      .put(`/api/users/${decodedToken.id}`)
+      .send(user)
+      .expect(200);
+    expect(helper.mapToIds(newResult.body.words)).toContain(newWordToAdd);
   });
 
   test('removing a liked word is successful', async () => {
@@ -110,6 +118,6 @@ describe('addition of a liked word', () => {
       .send(newUser)
       .expect(200);
 
-    expect(result.body.words).not.toContain(wordToAdd);
+    expect(helper.mapToIds(result.body.words)).not.toContain(wordToAdd);
   });
 });

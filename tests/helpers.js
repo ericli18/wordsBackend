@@ -75,6 +75,10 @@ const validToken = async () => {
   return token;
 }
 
+const mapToIds = (array) => {
+  return array.map((item) => item.id);
+}
+
 module.exports = {
   initialWords,
   initialUsers,
@@ -82,5 +86,6 @@ module.exports = {
   wordsInDb,
   usersInDb,
   invalidToken,
-  validToken
+  validToken,
+  mapToIds,
 };

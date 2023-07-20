@@ -51,19 +51,39 @@ usersRouter.post('/', async (req, res) => {
   res.status(201).json(savedUser);
 });
 
+//the frontend must use ids to add words to the user, this will parse it
 usersRouter.put('/:id', async (req, res) => {
   const body = req.body._doc || req.body;
+
+  newWords = body.words.map((word) => {
+    return word.id? word.id : word;
+  });
 
   const user = {
     username: body.username,
     passwordHash: body.passwordHash,
-    words: body.words,
+    words: newWords,
   };
 
   const updatedUser = await User.findByIdAndUpdate(req.params.id, user, {
     new: true,
+  }).populate('words', {
+    word: 1,
+    definition: 1,
+    etymology: 1,
+    likes: 1,
   });
   res.json(updatedUser);
+});
+
+usersRouter.delete('/:id', async (req, res) => { 
+  const user = await User.findById(req.params.id);
+  if (user) {
+    await User.findByIdAndRemove(req.params.id);
+    res.status(204).end();
+  } else {
+    res.status(404).end();
+  }
 });
 
 module.exports = usersRouter;
