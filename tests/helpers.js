@@ -59,7 +59,6 @@ const invalidToken = async () => {
     username: 'invalid',
     password: 'invalid'
   })
-
   return jwt.sign(user.username, process.env.SECRET);
 }
 

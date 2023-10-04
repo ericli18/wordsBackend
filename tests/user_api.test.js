@@ -50,24 +50,24 @@ describe('when there are initially some users saved', () => {
     expect(usernames).toContain(userToAdd.username);
   });
 
-  // test('a user with the same username returns error code 400', async () => {
-  //   const userToAdd = {
-  //     username: 'draydere',
-  //     password: 'Wowza',
-  //   };
+  test('a user with the same username returns error code 400', async () => {
+    const userToAdd = {
+      username: 'draydere',
+      password: 'Wowza',
+    };
 
-  //   await api
-  //     .post('/api/users')
-  //     .send(userToAdd)
-  //     .expect(201)
-  //     .expect('Content-Type', /application\/json/);
+    await api
+      .post('/api/users')
+      .send(userToAdd)
+      .expect(201)
+      .expect('Content-Type', /application\/json/);
 
-  //   await api
-  //     .post('/api/users')
-  //     .send(userToAdd)
-  //     .expect(400)
-  //     .expect('Content-Type', /application\/json/);
-  // });
+    await api
+      .post('/api/users')
+      .send(userToAdd)
+      .expect(400)
+      .expect('Content-Type', /application\/json/);
+  });
 });
 
 describe('addition of a liked word', () => {
