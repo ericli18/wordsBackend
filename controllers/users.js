@@ -33,6 +33,8 @@ usersRouter.get('/:id', async (req, res, next) => {
 });
 
 usersRouter.post('/', async (req, res) => {
+  console.log('Received registration request for:', req.body);
+
   const body = req.body;
   if (!body.username || !body.password) {
     return res.status(400).json({
@@ -47,8 +49,13 @@ usersRouter.post('/', async (req, res) => {
     passwordHash: passwordHash,
   });
 
-  const savedUser = await user.save();
-  res.status(201).json(savedUser);
+  try {
+    const savedUser = await user.save();
+    res.status(201).json(savedUser);
+  } catch (error) {
+    console.error('Error saving user:', error); // Log the error
+    res.status(500).json({ error: 'Something went wrong' });
+  }
 });
 
 //the frontend must use ids to add words to the user, this will parse it
@@ -56,7 +63,7 @@ usersRouter.put('/:id', async (req, res) => {
   const body = req.body._doc || req.body;
 
   newWords = body.words.map((word) => {
-    return word.id? word.id : word;
+    return word.id ? word.id : word;
   });
 
   const user = {
@@ -76,7 +83,7 @@ usersRouter.put('/:id', async (req, res) => {
   res.json(updatedUser);
 });
 
-usersRouter.delete('/:id', async (req, res) => { 
+usersRouter.delete('/:id', async (req, res) => {
   const user = await User.findById(req.params.id);
   if (user) {
     await User.findByIdAndRemove(req.params.id);

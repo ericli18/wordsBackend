@@ -4,7 +4,7 @@ const wordSchema = new mongoose.Schema({
   word: String,
   definition: String,
   etymology: String,
-  accessDate: Number,
+  accessDate: String,
   likes: Number,
 });
 
