@@ -14,7 +14,6 @@ const middleware = require('./utils/middleware');
 
 
 const mongoURL = config.MONGODB_URI;
-console.log(mongoURL);
 mongoose.connect(mongoURL);
 app.use(cors());
 app.use(express.json());
