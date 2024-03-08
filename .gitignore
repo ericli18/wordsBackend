@@ -2,3 +2,4 @@
 .eslintignore
 .gitignore
 .dockerignore
+**/.node_modules
