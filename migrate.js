@@ -20,7 +20,6 @@ const wordSchema = new mongoose.Schema({
 const targetConnection = mongoose.createConnection(targetURI);
 const TargetWord = targetConnection.model('Word', wordSchema);
 
-
 const migrate = async () => {
   let count = 0;
   try {
@@ -28,9 +27,9 @@ const migrate = async () => {
     console.log(words.length);
     words.forEach(async (word) => {
       const newWord = new TargetWord({
-        word: word.word.substring(2, word.word.length-2),
-        definition: word.definition.substring(2, word.definition.length-2),
-        etymology: word.etymology.substring(2, word.etymology.length-2),
+        word: word.word.substring(2, word.word.length - 2),
+        definition: word.definition.substring(2, word.definition.length - 2),
+        etymology: word.etymology.substring(2, word.etymology.length - 2),
         accessDate: 0,
         likes: 0,
       });
